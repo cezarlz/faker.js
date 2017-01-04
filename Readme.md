@@ -8,7 +8,7 @@
 
 ## Demo
 
-[https://cdn.rawgit.com/Marak/faker.js/master/examples/browser/index.html](https://cdn.rawgit.com/Marak/faker.js/master/examples/browser/index.html)
+[http://marak.com/faker.js/](http://marak.com/faker.js/)
 
 ## Hosted API Microservice
 
@@ -20,9 +20,6 @@
 ```bash
 curl http://faker.hook.io?property=name.findName&locale=de
 ```
-## Support Faker Development
-
-Please pledge support at [https://www.patreon.com/marak](https://www.patreon.com/marak) to help ensure continued development of faker.js
 
 ## Usage
 
@@ -166,6 +163,7 @@ This will interpolate the format string with the value of methods `name.lastName
   * domainSuffix
   * domainWord
   * ip
+  * ipv6
   * userAgent
   * color
   * mac
@@ -232,6 +230,7 @@ Setting a new locale is simple:
 faker.locale = "de";
 ```
 
+ * cz
  * de
  * de_AT
  * de_CH
