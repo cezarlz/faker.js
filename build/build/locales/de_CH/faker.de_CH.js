@@ -247,8 +247,10 @@ var Commerce = function (faker) {
    * department
    *
    * @method faker.commerce.department
+   * @param {number} max
+   * @param {number} fixedAmount
    */
-  self.department = function() {
+  self.department = function(max, fixedAmount) {
       return faker.random.arrayElement(faker.definitions.commerce.department);
   };
 
@@ -804,9 +806,9 @@ var Finance = function (faker) {
       max = max || 1000;
       dec = dec || 2;
       symbol = symbol || '';
-      var randValue = faker.random.number({ max: max, min: min, precision: Math.pow(10, -dec) });
+      var randValue = faker.random.number({ max: max, min: min });
 
-      return symbol + randValue.toFixed(dec);
+      return symbol + (Math.round(randValue * Math.pow(10, dec)) / Math.pow(10, dec)).toFixed(dec);
 
   }
 
@@ -1042,9 +1044,6 @@ var Helpers = function (faker) {
    * @param {array} o
    */
   self.shuffle = function (o) {
-      if (o.length === 0) {
-        return [];
-      }
       o = o || ["a", "b", "c"];
       for (var j, x, i = o.length-1; i; j = faker.random.number(i), x = o[--i], o[i] = o[j], o[j] = x);
       return o;
@@ -1774,32 +1773,6 @@ var Internet = function (faker) {
   self.ip.schema = {
     "description": "Generates a random IP.",
     "sampleResults": ["97.238.241.11"]
-  };
-
-  /**
-   * ipv6
-   *
-   * @method faker.internet.ipv6
-   */
-  self.ipv6 = function () {
-      var randHash = function () {
-          var result = "";
-          for (var i = 0; i < 4; i++) {
-            result += (faker.random.arrayElement(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]));
-          }
-          return result
-      };
-
-      var result = [];
-      for (var i = 0; i < 8; i++) {
-        result[i] = randHash();
-      }
-      return result.join(":");
-  };
-
-  self.ipv6.schema = {
-    "description": "Generates a random IPv6 address.",
-    "sampleResults": ["2001:0db8:6276:b1a7:5213:22f1:25df:c8a0"]
   };
 
   /**
@@ -2726,6 +2699,7 @@ module["exports"] = [
   "Colombia",
   "Comoros",
   "Congo",
+  "Congo",
   "Cook Islands",
   "Costa Rica",
   "Cote d'Ivoire",
@@ -3221,7 +3195,7 @@ module["exports"] = [
 
 },{}],39:[function(require,module,exports){
 module.exports=require(38)
-},{"/Users/cezar/Web/faker.js/lib/locales/en/address/postcode.js":38}],40:[function(require,module,exports){
+},{"/Users/a/dev/faker.js/lib/locales/en/address/postcode.js":38}],40:[function(require,module,exports){
 module["exports"] = [
   "Apt. ###",
   "Suite ###"
@@ -11583,7 +11557,7 @@ module["exports"] = {
     "Supervisor",
     "Associate",
     "Executive",
-    "Liaison",
+    "Liason",
     "Officer",
     "Manager",
     "Engineer",
@@ -11634,7 +11608,7 @@ module["exports"] = [
 
 },{}],111:[function(require,module,exports){
 arguments[4][28][0].apply(exports,arguments)
-},{"./formats":110,"/Users/cezar/Web/faker.js/lib/locales/de_CH/phone_number/index.js":28}],112:[function(require,module,exports){
+},{"./formats":110,"/Users/a/dev/faker.js/lib/locales/de_CH/phone_number/index.js":28}],112:[function(require,module,exports){
 var system = {};
 module['exports'] = system;
 system.mimeTypes = require("./mimeTypes");
@@ -18388,7 +18362,7 @@ var Lorem = function (faker) {
    *
    * @method faker.lorem.paragraphs
    * @param {number} paragraphCount defaults to 3
-   * @param {string} separator defaults to `'\n \r'`
+   * @param {string} separatora defaults to `'\n \r'`
    */
   self.paragraphs = function (paragraphCount, separator) {
     if (typeof separator === "undefined") {
@@ -18851,69 +18825,9 @@ function Random (faker, seed) {
    * alphaNumeric
    *
    * @method faker.random.alphaNumeric
-   * @param {number} count defaults to 1
    */
-  this.alphaNumeric = function alphaNumeric(count) {
-    if (typeof count === "undefined") {
-      count = 1;
-    }
-
-    var wholeString = "";
-    for(var i = 0; i < count; i++) {
-      wholeString += faker.random.arrayElement(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]);
-    }
-
-    return wholeString;
-  };
-
-  /**
-   * cpf
-   * 
-   * @method faker.random.cpf
-   * @param  {boolean} If true insert the mask
-   * @return {string}
-   */
-  this.cpf = function cpf(mask) {
-    var cpfs = [
-      '93890915000',
-      '55178477065',
-      '11634631080',
-      '89261362052',
-      '40887612008',
-      '57056524028',
-      '02108968091',
-      '25235991044',
-      '97260237007',
-      '61621621090',
-      '53680398085',
-      '28186107029',
-      '42558146009',
-      '64337163000',
-      '26601021040',
-      '96689406016',
-      '69917211071',
-      '39697130051',
-      '31423032004',
-      '17497492039',
-      '55450571020',
-      '18001382028',
-      '83541951044',
-      '23595895045',
-      '83313027024'
-    ];
-
-    var cpf = faker.random.arrayElement(cpfs);
-
-    if (mask === true) {
-      return cpf.slice(0, 3) + '.' + cpf.slice(3, 6) + '.' + cpf.slice(6, 9) + '-' + cpf.slice(9, 11);
-    }
-
-    return cpf;
-  };
-
-  this.cpf.schema = {
-    "description": "Generates a CPF (Individual Registration) of brazilian people",
-    "sampleResults": ["23595895045", "833.130.270-24"]
+  this.alphaNumeric = function alphaNumeric() {
+    return faker.random.arrayElement(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]);
   }
 
   return this;
